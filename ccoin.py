@@ -8,6 +8,7 @@ import os
 import time
 from modules import Requests
 from modules.Login.Login import LoginModule
+from modules.Tweet import TweetModule
 
 class Ccoin(object):
 	version = '0.1.0'
@@ -49,6 +50,8 @@ class Ccoin(object):
 			                help='Your coding.net Email or Personality Suffix')
 		parser.add_argument('-p','--pwd', dest='pwd',action='store',type=str,default=conf.PWD,
 			                help='Your coding.net Password')
+		parser.add_argument('--plain', dest='plain',action='store_true',default=False,
+		                    help='if the -p param provided is plaintext')		
 		parser.add_argument('-v','--version', action='version', version='ccoin %s' % cls.version)
 		return parser.parse_args()
 	
@@ -68,7 +71,8 @@ class Ccoin(object):
 			if ret['version'] > cls.version:
 				# Need Update
 				cls.logger.warn('Current version is old. It may cause fail.\n You can get newest version by this command:\n'
-				                'git clone git@git.coding.net:xczh/coding_coins.git')
+				                'git pull')
+				sys.exit(-1)
 				return False
 			else:
 				return True
@@ -80,9 +84,9 @@ class Ccoin(object):
 		cls.update()
 		s = LoginModule(cls.logger, cls.args, cls.moduleInfo)
 		s.start()
-		cls.logger.error(cls.moduleInfo)
-
-
+		s = TweetModule(cls.logger, cls.args, cls.moduleInfo)
+		s.start()
+		cls.logger.info('Process finished.')
 
 if __name__=='__main__':
 	Ccoin.main()

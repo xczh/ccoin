@@ -5,6 +5,7 @@ from .. import Base
 from .. import Requests
 from urllib import urlencode
 import json
+import hashlib
 
 class LoginModule(Base.BaseModule):
 	
@@ -15,10 +16,14 @@ class LoginModule(Base.BaseModule):
 	login = False
 	
 	def init(self):
-		pass
+		self.email = self.args.user
+		if self.args.plain is True:
+			self.password = hashlib.sha1(self.args.pwd).hexdigest()
+		else:
+			self.password = self.args.pwd
 	
 	def run(self):
-		post_data = {'email':self.args.user,'password':self.args.pwd,'remember_me':False}
+		post_data = {'email':self.email,'password':self.password,'remember_me':False}
 		headers = {'User-Agent': 'Ccoin',
 		   'Accept': r'application/json, text/plain, */*',
 		   'Origin': r'https://coding.net',
@@ -35,7 +40,6 @@ class LoginModule(Base.BaseModule):
 				if ret['code'] == 0:
 					# Success
 					self.userinfo = ret['data']
-					print ret['data']
 					self.login = True
 					return True
 				else:
