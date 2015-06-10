@@ -17,6 +17,13 @@ DEBUG = True
 PATH_ROOT = os.getcwd()
 
 '''
+  自动推送代码配置
+'''
+PUSH_PROJECT = 'dust'
+PUSH_BRANCH = 'master'
+PUSH_PATH = 'coding_coin'
+
+'''
   日志配置
 '''
 # 输出日志等级，可选INFO,WARNING,ERROR之一，默认值WARNING

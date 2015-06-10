@@ -9,6 +9,7 @@ import time
 from modules import Requests
 from modules.Login.Login import LoginModule
 from modules.Tweet import TweetModule
+from modules.PushCode import PushCodeModule
 
 class Ccoin(object):
 	version = '0.1.0'
@@ -82,9 +83,11 @@ class Ccoin(object):
 		cls.initLogger()
 		cls.args = cls.argsParser()
 		cls.update()
-		s = LoginModule(cls.logger, cls.args, cls.moduleInfo)
+		s = LoginModule(cls.logger, cls.args, conf, cls.moduleInfo)
 		s.start()
-		s = TweetModule(cls.logger, cls.args, cls.moduleInfo)
+		s = TweetModule(cls.logger, cls.args, conf, cls.moduleInfo)
+		s.start()
+		s = PushCodeModule(cls.logger, cls.args, conf, cls.moduleInfo)
 		s.start()
 		cls.logger.info('Process finished.')
 

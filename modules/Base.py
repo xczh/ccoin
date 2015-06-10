@@ -3,9 +3,10 @@
 
 class BaseModule(object):
 	
-	def __init__(self,logger,args,moduleInfo):
+	def __init__(self,logger,args,conf,moduleInfo):
 		self.args = args
 		self.logger = logger
+		self.conf = conf
 		self.moduleInfo = moduleInfo
 	
 	def init(self):
