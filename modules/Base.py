@@ -1,27 +1,61 @@
 #!/usr/bin/env python
 #coding=utf-8
 
+import logging
+
 class BaseModule(object):
 	
-	def __init__(self,logger,args,conf,moduleInfo):
-		self.args = args
-		self.logger = logger
-		self.conf = conf
-		self.moduleInfo = moduleInfo
+	def __init__(self,mArgs,mInfo):
+	    # Logger
+		self.logger=logging.getLogger('Ccoin')
+	    # Module Name
+	    self.moduleName = str(self.__class__)
+	    # Args for modules (Read Only)
+		self.__mArgs = mArgs
+		# Module Info (Shared)
+		self._mInfo = mInfo
+	
+	@property
+	def mArgs(self):
+	    return self.__mArgs
+	
+	@property
+	def mInfo(self):
+	    return self._mInfo
+	
+    def mInfoAdd(self,key,value):
+        if key in self._mInfo:
+            self.logger.error('the key %s to story in mInfo is already exists. value:%s' %(key,value))
+            return False
+        else:
+            self._mInfo[key] = value
+            return True
+	
+	def start(self):
+	    if not self.init():
+		    self.logger.error('%s init failed, exit.' %self.moduleName)
+		else:
+		    self.logger.info('%s init finished.' %self.moduleName)
+		self.run()
+		self.clean()
 	
 	def init(self):
-		pass
+	    '''
+	    rewrite by subclass for init module
+	    @return True | False
+	    @notice if init method return false the module will exit.
+	    '''
+		return True
 	
 	def run(self):
+	    '''
+	    rewrite by subclass for module's main function
+	    '''
 		pass
 	
 	def clean(self):
+	    '''
+	    rewrite by subclass for clean work after run
+	    '''
 		pass
 	
-	def saveModuleInfo(self,info):
-		self.moduleInfo.update(info)
-		
-	def start(self):
-		self.init()
-		self.run()
-		self.clean()

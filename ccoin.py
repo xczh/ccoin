@@ -6,20 +6,32 @@ import logging
 import sys
 import os
 import time
+
+from login import Login
 from modules import Requests
 from modules.Login.Login import LoginModule
 from modules.Tweet import TweetModule
 from modules.PushCode import PushCodeModule
 
 class Ccoin(object):
+    # Version
 	version = '0.1.0'
+	# CLI args
 	args = None
+	# Logger
 	logger = None
-	moduleInfo = {}
+	# Module Shared Info
+	mInfo = {}
+	
+	# User
+	login = False
+	sid =None
+	userinfo = None
+	global_key = None
 	
 	@classmethod
 	def initLogger(cls):
-		logger=logging.getLogger(cls.__name__)
+		logger=logging.getLogger('Ccoin')
 		logger.setLevel(logging.DEBUG)
 		format = logging.Formatter(conf.LOG_FORMAT,conf.LOG_DATE_FORMAT)
 		if conf.DEBUG:
@@ -54,7 +66,7 @@ class Ccoin(object):
 		parser.add_argument('--plain', dest='plain',action='store_true',default=False,
 		                    help='if the -p param provided is plaintext')		
 		parser.add_argument('-v','--version', action='version', version='ccoin %s' % cls.version)
-		return parser.parse_args()
+		cls.args = parser.parse_args()
 	
 	@classmethod
 	def update(cls):
@@ -72,7 +84,7 @@ class Ccoin(object):
 			if ret['version'] > cls.version:
 				# Need Update
 				cls.logger.warn('Current version is old. It may cause fail.\n You can get newest version by this command:\n'
-				                'git pull')
+				                'git pull origin dev:dev')
 				sys.exit(-1)
 				return False
 			else:
@@ -80,15 +92,38 @@ class Ccoin(object):
 	
 	@classmethod
 	def main(cls):
+	    # init logger
 		cls.initLogger()
-		cls.args = cls.argsParser()
+		# get cli args
+		cls.argsParser()
+		# check for update
 		cls.update()
-		s = LoginModule(cls.logger, cls.args, conf, cls.moduleInfo)
-		s.start()
-		s = TweetModule(cls.logger, cls.args, conf, cls.moduleInfo)
-		s.start()
-		s = PushCodeModule(cls.logger, cls.args, conf, cls.moduleInfo)
-		s.start()
+		# login
+		u = Login()
+		if u.login():
+		   msg = u.getResult()
+		   cls.login = True
+		   cls.global_key = msg['global_key']
+		   cls.sid = msg['sid']
+		   cls.userinfo = msg['userinfo']
+		else:
+		    # login failed, exit.
+		    sys.exit(-1)
+		    
+		# build module args
+		mArgs = {
+		    'login':cls.login,
+		    'global_key':cls.global_key,
+		    'userinfo':cls.userinfo,
+		    }
+		print mArgs
+		sys.exit(-1)
+		# module work
+		for module in conf.ENABLED_MODULE:
+		    m = module(mArgs, cls.mInfo)
+		    m.start()
+		
+		# end
 		cls.logger.info('Process finished.')
 
 if __name__=='__main__':
