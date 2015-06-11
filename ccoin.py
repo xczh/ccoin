@@ -9,9 +9,6 @@ import time
 
 from login import Login
 from modules import Requests
-from modules.Login.Login import LoginModule
-from modules.Tweet import TweetModule
-from modules.PushCode import PushCodeModule
 
 class Ccoin(object):
     # Version
@@ -62,9 +59,7 @@ class Ccoin(object):
 		parser.add_argument('-u','--user', dest='user',action='store',type=str,default=conf.USER,
 			                help='Your coding.net Email or Personality Suffix')
 		parser.add_argument('-p','--pwd', dest='pwd',action='store',type=str,default=conf.PWD,
-			                help='Your coding.net Password')
-		parser.add_argument('--plain', dest='plain',action='store_true',default=False,
-		                    help='if the -p param provided is plaintext')		
+			                help='Your coding.net Password')	
 		parser.add_argument('-v','--version', action='version', version='ccoin %s' % cls.version)
 		cls.args = parser.parse_args()
 	
@@ -99,7 +94,7 @@ class Ccoin(object):
 		# check for update
 		cls.update()
 		# login
-		u = Login()
+		u = Login(cls.args.user,cls.args.pwd)
 		if u.login():
 		   msg = u.getResult()
 		   cls.login = True
@@ -116,10 +111,11 @@ class Ccoin(object):
 		    'global_key':cls.global_key,
 		    'userinfo':cls.userinfo,
 		    }
-		print mArgs
-		sys.exit(-1)
+
 		# module work
-		for module in conf.ENABLED_MODULE:
+		for name in conf.ENABLED_MODULE:
+		    p = __import__('modules.' + name)
+		    m = getattr(p,name)()
 		    m = module(mArgs, cls.mInfo)
 		    m.start()
 		

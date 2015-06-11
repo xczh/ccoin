@@ -15,7 +15,7 @@ PWD = 'default_pwd'
 # 调试模式
 DEBUG = True
 PATH_ROOT = os.getcwd()
-ENABLE_MODULE = ['TweetModule','PushCodeModule']
+ENABLED_MODULE = ['TweetModule','PushCodeModule']
 
 '''
   自动推送代码配置

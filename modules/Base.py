@@ -7,13 +7,13 @@ class BaseModule(object):
 	
 	def __init__(self,mArgs,mInfo):
 	    # Logger
-		self.logger=logging.getLogger('Ccoin')
+	    self.logger=logging.getLogger('Ccoin')
 	    # Module Name
 	    self.moduleName = str(self.__class__)
 	    # Args for modules (Read Only)
-		self.__mArgs = mArgs
-		# Module Info (Shared)
-		self._mInfo = mInfo
+	    self.__mArgs = mArgs
+	    # Module Info (Shared)
+	    self._mInfo = mInfo
 	
 	@property
 	def mArgs(self):
