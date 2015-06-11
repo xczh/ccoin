@@ -14,7 +14,7 @@ from modules.PushCode import PushCodeModule
 
 class Ccoin(object):
 	# Version
-	version = '0.1.0'
+	version = '1.0.1'
 	# CLI args
 	args = None
 	# Logger
