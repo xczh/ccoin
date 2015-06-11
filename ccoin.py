@@ -100,7 +100,7 @@ class Ccoin(object):
 		# get cli args
 		cls.argsParser()
 		# check for update
-		#cls.update()
+		cls.update()
 		# login
 		u = Login(cls.args.user,cls.args.pwd)
 		if u.login():
