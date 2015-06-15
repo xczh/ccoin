@@ -1,5 +1,11 @@
 #!/usr/bin/env python
-#coding=utf-8
+#coding:utf-8
+"""
+  Purpose: ccoin Login Core Class
+  Author:  xczh <christopher.winnie2012@gmail.com>
+  
+  Copyright (c) 2015 xczh. All rights reserved.
+"""
 
 from modules import Requests
 import json

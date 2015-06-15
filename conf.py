@@ -1,38 +1,46 @@
 #!/usr/bin/env python
-#coding=utf-8
+#coding:utf-8
+"""
+  Purpose: ccoin configuration file
+  Author:  xczh <christopher.winnie2012@gmail.com>
+  
+  Copyright (c) 2015 xczh. All rights reserved.
+"""
 
-import os
+''' === Common Option === '''
 
 '''
-  coding.net 登录信息
+  Login
 '''
 USER = 'default_user'
 PWD = 'default_pwd'
 
 '''
-  基础配置
-'''
-# 调试模式
-DEBUG = True
-PATH_ROOT = os.getcwd()
-ENABLED_MODULE = ['TweetModule','PushCodeModule']
-
-'''
-  自动推送代码配置
+  PushCode Module
 '''
 PUSH_PROJECT = 'dust'
 PUSH_BRANCH = 'master'
 PUSH_PATH = 'coding_coin'
 
+
+
+''' === Advanced Option === '''
+
+''' If you don't know what the meaning of it, don't edit it. '''
+
 '''
-  日志配置
+  Global
 '''
-# 输出日志等级，可选INFO,WARNING,ERROR之一，默认值WARNING
-LOG_LEVEL = 'WARNING'
-# 日志头格式
-#LOG_FORMAT = r'[%(asctime)s %(levelname)s]%(filename)s(%(lineno)dL) %(message)s'
+import os
+DEBUG = False
+PATH_ROOT = os.getcwd()
+ENABLED_MODULE = ['TweetModule','PushCodeModule']
+
+'''
+  Log
+'''
+LOG_LEVEL = 'INFO' # INFO,WARNING,ERROR
 LOG_FORMAT = r'[%(asctime)s %(levelname)s] %(message)s'
-# 日期格式
 LOG_DATE_FORMAT = r'%Y-%m-%d %H:%M:%S'
-# 日志路径
-LOG_DIR = os.path.join(PATH_ROOT,'log')
+#LOG_DIR = os.path.join(PATH_ROOT,'log')
+LOG_DIR = '/123'

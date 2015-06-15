@@ -1,5 +1,11 @@
 #!/usr/bin/env python
-#coding=utf-8
+#coding:utf-8
+"""
+  Purpose: ccoin Modules Base
+  Author:  xczh <christopher.winnie2012@gmail.com>
+  
+  Copyright (c) 2015 xczh. All rights reserved.
+"""
 
 import logging
 import Requests
@@ -46,7 +52,7 @@ class BaseModule(object):
 		if not self.init():
 			self.logger.error('%s init failed, exit.' %self.moduleName)
 		else:
-			self.logger.info('%s init finished.' %self.moduleName)
+			self.logger.debug('%s init finished.' %self.moduleName)
 		self.run()
 		self.clean()
 
