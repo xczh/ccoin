@@ -1,5 +1,11 @@
 #!/usr/bin/env python
-#coding=utf-8
+#coding:utf-8
+"""
+  Purpose: ccoin Main
+  Author:  xczh <christopher.winnie2012@gmail.com>
+  
+  Copyright (c) 2015 xczh. All rights reserved.
+"""
 
 import conf
 import logging
@@ -14,7 +20,7 @@ from modules.PushCode import PushCodeModule
 
 class Ccoin(object):
 	# Version
-	version = '1.0.1'
+	version = '1.0.2'
 	# CLI args
 	args = None
 	# Logger
@@ -43,15 +49,25 @@ class Ccoin(object):
 		else:
 			# 运行模式
 			# File Handler
-			file_handler = logging.FileHandler(filename=os.path.join(conf.LOG_DIR,cls.__name__ + '-%d.log' % int(time.time())),mode='w')
-			if conf.LOG_LEVEL == 'INFO':
-				file_handler.setLevel(logging.INFO)
-			elif conf.LOG_LEVEL == 'ERROR':
-				file_handler.setLevel(logging.ERROR)
+			try:
+				file_handler = logging.FileHandler(filename=os.path.join(conf.LOG_DIR,'ccoin-%s.log' % time.strftime('%Y%m%d')),mode='w')
+			except IOError,e:
+				print 'IOError: %s (%s)' %(e.strerror,e.filename)
+				print 'Warning: Log will not be write to file!'
+				# Use streamHandler instead
+				console = logging.StreamHandler()
+				console.setLevel(logging.INFO)
+				console.setFormatter(format)
+				logger.addHandler(console)
 			else:
-				file_handler.setLevel(logging.WARNING)
-			file_handler.setFormatter(format)
-			logger.addHandler(file_handler)		
+				if conf.LOG_LEVEL == 'INFO':
+					file_handler.setLevel(logging.INFO)
+				elif conf.LOG_LEVEL == 'ERROR':
+					file_handler.setLevel(logging.ERROR)
+				else:
+					file_handler.setLevel(logging.WARNING)
+				file_handler.setFormatter(format)
+				logger.addHandler(file_handler)		
 		cls.logger = logger
 
 	@classmethod
@@ -74,6 +90,7 @@ class Ccoin(object):
 	@classmethod
 	def update(cls):
 		import json
+		cls.logger.info('ccoin %s' %cls.version)
 		# URL
 		url = r'https://coding.net/u/xczh/p/coding_coins/git/raw/master/update.html'
 		r = Requests.get(url)
@@ -82,16 +99,19 @@ class Ccoin(object):
 			return False
 		else:
 			cls.logger.debug('HTTP response body: %s' % r.text)
-			ret = json.loads(r.text)
-			cls.logger.info('Newest Version is: %s' % ret['version'])
-			if ret['version'] > cls.version:
-				# Need Update
-				cls.logger.warn('Current version is old. It may cause fail.\n You can get newest version by this command:\n'
-								'git pull origin dev:dev')
-				sys.exit(-1)
+			try:
+				ret = json.loads(r.text)
+			except ValueError:
+				cls.logger.error('Update Fail. Remote repository return: %s' %r.text)
 				return False
 			else:
+				cls.logger.info('Latest Version is: %s' % ret['version'])
+				if ret['version'] > cls.version:
+					# Need Update
+					cls.logger.warn('Current version is old. It may cause fail. You can get newest version by this command:'
+					                'git pull origin dev:dev')
 				return True
+				
 
 	@classmethod
 	def main(cls):
@@ -134,7 +154,7 @@ class Ccoin(object):
 			m.start()
 
 		# end
-		cls.logger.info('Process finished.')
+		cls.logger.info('ccoin finished.')
 
 if __name__=='__main__':
 	Ccoin.main()
