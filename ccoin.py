@@ -17,10 +17,11 @@ from login import Login
 from modules import Requests
 from modules.Tweet import TweetModule
 from modules.PushCode import PushCodeModule
+from modules.Point import PointModule
 
 class Ccoin(object):
 	# Version
-	version = '1.0.2'
+	version = '1.0.3'
 	# CLI args
 	args = None
 	# Logger

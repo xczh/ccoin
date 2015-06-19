@@ -34,7 +34,7 @@ PUSH_PATH = 'coding_coin'
 import os
 DEBUG = False
 PATH_ROOT = os.getcwd()
-ENABLED_MODULE = ['TweetModule','PushCodeModule']
+ENABLED_MODULE = ['TweetModule','PushCodeModule','PointModule']
 
 '''
   Log
@@ -42,5 +42,4 @@ ENABLED_MODULE = ['TweetModule','PushCodeModule']
 LOG_LEVEL = 'INFO' # INFO,WARNING,ERROR
 LOG_FORMAT = r'[%(asctime)s %(levelname)s] %(message)s'
 LOG_DATE_FORMAT = r'%Y-%m-%d %H:%M:%S'
-#LOG_DIR = os.path.join(PATH_ROOT,'log')
-LOG_DIR = '/123'
+LOG_DIR = os.path.join(PATH_ROOT,'log')
