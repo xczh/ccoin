@@ -34,7 +34,7 @@ PUSH_PATH = 'coding_coin'
 import os
 DEBUG = False
 PATH_ROOT = os.getcwd()
-ENABLED_MODULE = ['TweetModule','PushCodeModule']
+ENABLED_MODULE = ['TweetModule','PushCodeModule','PointModule']
 
 '''
   Log
