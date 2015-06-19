@@ -18,10 +18,11 @@ from modules import Requests
 from modules.Tweet import TweetModule
 from modules.PushCode import PushCodeModule
 from modules.Point import PointModule
+from modules.WebHook import WebHookModule
 
 class Ccoin(object):
 	# Version
-	version = '1.0.3'
+	version = '1.0.4'
 	# CLI args
 	args = None
 	# Logger
@@ -51,7 +52,7 @@ class Ccoin(object):
 			# 运行模式
 			# File Handler
 			try:
-				file_handler = logging.FileHandler(filename=os.path.join(conf.LOG_DIR,'ccoin-%s.log' % time.strftime('%Y%m%d')),mode='w')
+				file_handler = logging.FileHandler(filename=os.path.join(conf.LOG_DIR,'ccoin-%s.log' % time.strftime('%Y%m%d')),mode='a')
 			except IOError,e:
 				print 'IOError: %s (%s)' %(e.strerror,e.filename)
 				print 'Warning: Log will not be write to file!'
@@ -143,6 +144,8 @@ class Ccoin(object):
 		    'PUSH_PROJECT':cls.args.push_project,
 		    'PUSH_BRANCH':cls.args.push_branch,
 		    'PUSH_PATH':cls.args.push_path,
+		    'WEBHOOK_KEY':'',
+		    'WEBHOOK_URL':'',
 		}
 		for k,v in mArgs.iteritems():
 			if not v and k in conf.__dict__:
@@ -155,7 +158,7 @@ class Ccoin(object):
 			m.start()
 
 		# end
-		cls.logger.info('ccoin finished.')
+		cls.logger.info('ccoin finished. Global key: %s' %cls.global_key)
 
 if __name__=='__main__':
 	Ccoin.main()
