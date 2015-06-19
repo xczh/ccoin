@@ -22,7 +22,11 @@ PUSH_PROJECT = 'dust'
 PUSH_BRANCH = 'master'
 PUSH_PATH = 'coding_coin'
 
-
+'''
+  WebHook Module
+'''
+WEBHOOK_URL = ''
+WEBHOOK_KEY = '' # It will be send as 'key' field for auth
 
 ''' === Advanced Option === '''
 
@@ -34,7 +38,7 @@ PUSH_PATH = 'coding_coin'
 import os
 DEBUG = False
 PATH_ROOT = os.getcwd()
-ENABLED_MODULE = ['TweetModule','PushCodeModule','PointModule']
+ENABLED_MODULE = ['TweetModule','PushCodeModule','PointModule','WebHookModule']
 
 '''
   Log

@@ -21,7 +21,9 @@ class PointModule(BaseModule):
 			ret = json.loads(r.text)
 			if ret['code'] == 0:
 				self.logger.info('Get point info success.')
-				self.logger.info('Current: point left:%.2f, point total:%.2f' %(ret['data']['points_left'],ret['data']['points_total']))
+				self.logger.info('user:%s point_left:%.2f point_total:%.2f' %(self.mArgs['global_key'],ret['data']['points_left'],ret['data']['points_total']))
+				self.mInfoAdd('point_left',ret['data']['points_left'])
+				self.mInfoAdd('point_total',ret['data']['points_total'])
 				return True
 			else:
 				self.logger.error('Get point Failed. Server response: %s' %ret)
@@ -29,4 +31,5 @@ class PointModule(BaseModule):
 		else:
 			self.logger.error('HTTP error while get point. URL: %s \n HTTP Code: %s' %(self.point_url,r.status_code))
 			return False
+
 	

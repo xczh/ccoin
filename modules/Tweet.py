@@ -40,7 +40,7 @@ class TweetModule(BaseModule):
 						return True
 				else:
 					self.logger.error('HTTP error while delete tweet. URL: %s' % delete_url)
-					return True
+					return False
 			else:
 				self.logger.error('Tweet send failed. Server response: %s' %ret)
 				return False
@@ -48,5 +48,3 @@ class TweetModule(BaseModule):
 			self.logger.error('HTTP error while send tweet. URL: %s' %self.tweet_url)
 			return False
 	
-	def clean(self):
-		pass

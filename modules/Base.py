@@ -51,10 +51,17 @@ class BaseModule(object):
 	def start(self):
 		if not self.init():
 			self.logger.error('%s init failed, exit.' %self.moduleName)
+			return False
 		else:
 			self.logger.debug('%s init finished.' %self.moduleName)
-		self.run()
+		flag = self.run()
 		self.clean()
+		if not flag:
+			self.logger.error('%s run failed.' %self.moduleName)
+			return False
+		else:
+			self.logger.debug('%s run finished.' %self.moduleName)
+			return True
 
 	def init(self):
 		'''
@@ -68,7 +75,7 @@ class BaseModule(object):
 		'''
 		rewrite by subclass for module's main function
 		'''
-		pass
+		return True
 
 	def clean(self):
 		'''

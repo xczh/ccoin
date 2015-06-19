@@ -44,6 +44,7 @@ class PushCodeModule(BaseModule):
 				return True
 			else:
 				self.logger.error('PushCode Failed. Server response: %s' %ret)
+				return False
 		else:
 			self.logger.error('HTTP error while pushCode. URL: %s \n HTTP Code: %s' %(self.push_url,r.status_code))
 			return False
