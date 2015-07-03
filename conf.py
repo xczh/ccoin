@@ -35,9 +35,9 @@ WEBHOOK_KEY = '' # It will be send as 'key' field for auth
 '''
   Global
 '''
-import os
+import os,sys
 DEBUG = False
-PATH_ROOT = os.getcwd()
+PATH_ROOT = os.path.split(os.path.realpath(sys.argv[0]))[0]
 ENABLED_MODULE = ['TweetModule','PushCodeModule','PointModule','WebHookModule']
 
 '''
