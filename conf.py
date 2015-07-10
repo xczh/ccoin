@@ -3,7 +3,7 @@
 """
   Purpose: ccoin configuration file
   Author:  xczh <christopher.winnie2012@gmail.com>
-  
+
   Copyright (c) 2015 xczh. All rights reserved.
 """
 
@@ -38,7 +38,7 @@ WEBHOOK_KEY = '' # It will be send as 'key' field for auth
 import os,sys
 DEBUG = False
 PATH_ROOT = os.path.split(os.path.realpath(sys.argv[0]))[0]
-ENABLED_MODULE = ['TweetModule','PushCodeModule','PointModule','WebHookModule']
+ENABLED_MODULE = ['PushCodeModule','PointModule','WebHookModule']
 
 '''
   Log
